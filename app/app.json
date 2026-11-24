@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "SheReady",
+    "slug": "sheready",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "plugins": [
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Permite a SheReady grabar tus respuestas para la entrevista.",
+          "enableBackgroundRecording": false,
+          "enableBackgroundPlayback": false
+        }
+      ]
+    ],
+    "web": {
+      "favicon": "./src/assets/logo_banderin_turquesa.png"
+    }
+  }
+}

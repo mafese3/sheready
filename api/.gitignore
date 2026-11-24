@@ -1,0 +1,16 @@
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.db
+.test-temp*/
+.debug-tests/
+
+*.log
+
+.api.pid
+
+.models/
+.vercel
+.env*

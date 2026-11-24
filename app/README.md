@@ -1,0 +1,122 @@
+> Integración actual: Inicio, entrevista y bienestar ya usan el cliente de API.
+> Consulta [API-CLIENT.md](API-CLIENT.md) para el contrato y el arranque actualizado.
+> Los apartados antiguos de endpoints pendientes describen la maqueta anterior y se
+> conservan como contexto de diseño; la referencia vigente es API-CLIENT.md.
+
+# SheReady App
+
+Aplicación móvil de SheReady, creada con React Native, Expo y TypeScript.
+
+## Puesta en marcha
+
+```bash
+cd app
+npm install
+npm start
+```
+
+Escanea el código QR con Expo Go o sigue las indicaciones de Expo para abrir la aplicación en un simulador. También puedes usar `npm run android`, `npm run ios` o `npm run web`. Para comprobar los tipos, ejecuta `npm run typecheck`.
+
+## Estructura
+
+```text
+app/
+├── App.tsx              # Punto de entrada
+├── templates/           # Referencias visuales proporcionadas para las pantallas
+└── src/
+    ├── assets/          # Imágenes, fuentes y otros recursos de la aplicación
+    ├── components/      # Componentes reutilizables
+    ├── screens/         # Pantallas de la aplicación
+    ├── services/        # Acceso a datos y futuras llamadas a la API
+    │   └── mocks/       # Datos y respuestas simuladas durante el desarrollo
+    ├── theme/           # Estilos y valores visuales compartidos
+    └── types/           # Tipos compartidos de TypeScript
+```
+
+Se irán creando las pantallas y sus servicios a medida que se definan. Durante el desarrollo, los servicios utilizarán respuestas simuladas en `src/services/mocks`.
+
+## Endpoints pendientes
+
+El onboarding funciona en memoria: no envía datos ni conserva las respuestas al cerrar la aplicación. Su catálogo de opciones y el resumen son locales.
+
+- **Guardar y recuperar el onboarding y el plan inicial**: pendientes de definir método y ruta. Datos previstos: objetivos, rango de edad opcional, tiempo disponible y sector. La respuesta y el contrato de persistencia están pendientes de diseño.
+- **Obtener y comenzar la primera actividad**: pendientes de definir método, ruta, datos y respuesta. La pantalla posterior al resumen es provisional y no inicia ninguna actividad.
+
+Estos endpoints aún no existen ni se realizan llamadas a la API.
+
+## Paleta de colores
+
+Los colores de marca están centralizados en `src/theme/colors.ts`. Las nuevas pantallas deben importar `colors` desde ese archivo para mantener la identidad visual. También incluye blanco y variantes translúcidas para superficies, bordes y textos secundarios.
+
+| Color | Valor | Uso principal |
+| --- | --- | --- |
+| Ciruela | `#593D83` | Color principal, botones y superficies destacadas |
+| Lavanda | `#B9A3DE` | Color secundario |
+| Coral | `#EF968D` | Acento |
+| Verde salvia | `#BCE1D5` | Progreso y logros |
+| Marfil | `#FAF8F5` | Fondo general |
+| Berenjena | `#282338` | Textos |
+
+## Navegación y demo de entrevista
+
+Tras el onboarding se muestra la navegación principal: en móvil, una barra inferior de iconos con etiquetas accesibles; en pantallas anchas, una barra superior.
+
+La entrevista utiliza el cliente de API: crea una sesión, reproduce las preguntas servidas por el backend, solicita acceso al micrófono y envía las respuestas grabadas para su transcripción. Al finalizar, consulta el informe y permite revisar el historial. Configura `EXPO_PUBLIC_API_URL` como se explica en [API-CLIENT.md](API-CLIENT.md). Las ilustraciones animadas representan los turnos del entrevistador y de la usuaria.
+
+Los módulos de Kokoro de la demostración anterior se conservan en el proyecto, pero esta pantalla utiliza actualmente el audio proporcionado por el backend.
+
+## Actividades
+
+La sección Actividades agrupa las actividades diarias y muestra un espacio para futuros planes personalizados de preparación de entrevistas con IA, todavía sin implementar. Incluye una práctica guiada de respiración de 1, 5 o 10 minutos, a elegir antes de empezar (5 segundos de inhalación, 2 de pausa opcional y 5 de exhalación; basado en una pauta del [NHS](https://www.cht.nhs.uk/fileadmin/contentUploads/Services/Clinical/Oncology_Cancer_Services/Oncology/Documents/Booklets/Lung_PA_booklet_FINAL_A5_19.07.22.pdf)), con pausa y salida. La selección musical es opcional y se abre en Spotify. La actividad se pausa cuando la aplicación pasa a segundo plano. No se guardan resultados ni se llama a la API.
+
+### Endpoints pendientes para actividades
+
+- **Consultar catálogo y registrar actividades completadas**: métodos, rutas, persistencia y contratos pendientes de definir.
+
+«Para mi mini yo» permite guardar y eliminar frases localmente en el dispositivo mediante AsyncStorage; no se sincronizan con el servidor. «Mi evidencia de confianza» guía una reflexión de cuatro pasos y mantiene las respuestas solo mientras la actividad está abierta. Ninguna de las dos requiere API.
+
+## Inicio
+
+La página de inicio usa un nombre y contenido de actualidad de ejemplo. La recomendación de confianza es una actividad existente mostrada como ejemplo; todavía no se genera un plan personalizado con IA. Los accesos de actividades abren las mismas instrucciones que el listado.
+
+### Endpoints pendientes para inicio
+
+- **Perfil de la usuaria y recomendaciones de actividades**: métodos, rutas y contratos pendientes de definir.
+- **Noticias de actualidad**: fuentes, método, ruta y respuesta pendientes de definir.
+
+## Perfil y entrevistas reales
+
+Las entrevistas reales se guardan localmente con AsyncStorage en este dispositivo; no se sincronizan con una cuenta y el almacenamiento no está cifrado. El perfil permite retomar el onboarding si se ha saltado. El estado de finalización y las respuestas del onboarding solo duran durante la sesión; su persistencia está pendiente. Desde Perfil o desde Entrevista se puede registrar una oferta (enlace o descripción), empresa, puesto, fecha y hora local, consultar la cuenta atrás, anotar recordatorios personales y añadir feedback tras la entrevista. El acceso a respiración abre la actividad con un minuto como opción inicial.
+
+### Endpoints pendientes de perfil y entrevistas reales
+
+- Crear, consultar y modificar el perfil de la usuaria y recuperar los datos del onboarding: método, ruta y contrato por definir.
+- Crear, consultar y modificar entrevistas reales, fechas, ofertas, notas y feedback: métodos, rutas y contratos por definir.
+- Gestionar recordatorios y permisos de notificación, así como generar planes personalizados: métodos, rutas, canales y contratos por definir. Actualmente no se envían notificaciones ni se genera un plan con IA.
+
+
+## Noticias semanales
+
+Actualidad muestra noticias por sector y semana local de calendario (lunes incluido a lunes siguiente excluido). Si se completó el onboarding durante la sesión, se selecciona su sector; también se puede cambiar el filtro. La única noticia es ficticia: su fecha simulada se ajusta a la semana actual, por lo que no representa una publicación real. Los sectores sin ejemplo muestran un estado vacío.
+
+### Backend pendiente para noticias
+
+- Consultar noticias reales por sector y por intervalo de semana: método, ruta, fecha, zona horaria, fuente, enlaces y paginación por definir.
+- Persistir el sector elegido y actualizar la fuente semanalmente: contrato, frecuencia y política editorial por definir. Actualmente el sector del onboarding solo se conserva durante la sesión.
+
+Para regenerar el código del reproductor móvil después de modificar `kokoroWeb.ts`, ejecuta `pnpm build:kokoro-bridge` desde `app`.
+
+El flujo previsto para el despliegue y la preparación personalizada con IA está registrado en [Plan de despliegue e IA](../docs/PLAN_DESPLIEGUE_IA.md).
+
+## Entrevista inicial y puesto objetivo
+
+Al completar el onboarding, se ofrece una entrevista inicial común de cinco preguntas, con respuestas escritas. La primera pregunta invita a la usuaria a presentarse; las demás exploran experiencias, retos, colaboración y objetivos de mejora. Se puede posponer y retomarla desde Perfil. Tras completarla o posponerla, se ofrece añadir un puesto con enlace o descripción de la oferta; también se puede hacer más tarde desde Perfil.
+
+Las respuestas se guardan al terminar el cuestionario, y el puesto al guardar el formulario, en AsyncStorage de este dispositivo. No se sincronizan ni están cifrados por esta funcionalidad. Las respuestas y el puesto se mantienen al reiniciar; la integración con la cuenta, la transcripción por voz, el análisis de IA y la generación de un perfil o plan personalizados aún no están implementados en este flujo.
+
+### Endpoints pendientes para el flujo inicial
+
+- Guardar y recuperar las respuestas de la entrevista inicial asociadas a la cuenta.
+- Generar y recuperar un perfil educativo de fortalezas y áreas de mejora basado en las respuestas.
+- Guardar y recuperar el puesto objetivo, su enlace o descripción y asociarlo a la cuenta.
+- Generar simulacros y actividades personalizadas para ese perfil y puesto, conforme al [plan previsto](../docs/PLAN_DESPLIEGUE_IA.md).
